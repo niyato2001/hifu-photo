@@ -1,14 +1,26 @@
 import { ButtonProps } from './';
 
 const inqueryProps: ButtonProps = {
-  // onClick:()=>,
+  // onClick:()=>void,
   type: 'btn-inquery',
   name: 'お問い合わせ',
 };
 const fileProps: ButtonProps = {
-  // onClick:()=>,
+  // onClick:()=>void,
   type: 'btn-file',
   name: '画像ファイルを選択',
+};
+
+const readProps: ButtonProps = {
+  // onClick:()=>void,
+  type: 'btn-file',
+  name: 'ID を読み込む',
+};
+
+const renameProps: ButtonProps = {
+  // onClick:()=>void,
+  type: 'btn-file',
+  name: 'リネームする',
 };
 
 /**
@@ -32,4 +44,6 @@ export const propObj: PropObj = {
 export const propObj: { [key: string]: ButtonProps } = {
   inquery: inqueryProps,
   file: fileProps,
+  read: readProps,
+  rename: renameProps,
 };
