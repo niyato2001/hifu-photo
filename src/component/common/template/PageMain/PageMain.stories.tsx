@@ -1,4 +1,4 @@
-import { ComponentMeta, Story } from '@storybook/react';
+import type { ComponentMeta, Story } from '@storybook/react';
 import { PageMain, PageMainProps } from './PageMain';
 import { propObj } from './PageMain.props';
 
