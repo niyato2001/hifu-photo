@@ -1,24 +1,12 @@
 import { PageMainProps } from './PageMain';
+import { propObj as buttonProps } from '@/component/common/part/Button/Button.props';
 
-const defaultProps: PageMainProps = {};
-
-/**
- * const propObj への補足。
- * propObj の中身が3つ以上になる場合、以下のように書くと便利です。
- * 使わないときはこのコメントアウト部分は削除してください。
- */
- /*interface PropObj {
-  default: PageMainProps;
-  pattern1(適宜名称を変えてください): PageMainProps;
-  pattern2: PageMainProps;
-  ...
-}
-export const propObj: PropObj = {
-  default: defaultProps,
-    pattern1(適宜名称を変えてください): pattern1Props;
-  pattern2: pattern2Props;
-  ...
-}*/
+const defaultProps: PageMainProps = {
+  title: '皮膚科専攻医の写真整理を DX する',
+  fileButton: buttonProps.file,
+  readButton: buttonProps.read,
+  renameButton: buttonProps.rename,
+};
 
 export const propObj: { [key: string]: PageMainProps } = {
   default: defaultProps,
