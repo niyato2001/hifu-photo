@@ -1,21 +1,9 @@
 export interface ButtonProps {
-  // onClick: () => void;
-  type: 'btn-inquery' | 'btn-file';
-  name: string;
+  children: React.ReactNode;
 }
 
 export const baseId = 'common-part-button';
 
-export const Button: React.FC<ButtonProps> = ({
-  // onClick,
-  type,
-  name,
-}) => (
-  <button
-    data-testid={baseId}
-    // onClick={onClick}
-    className={`${type} btn`}
-  >
-    {name}
-  </button>
+export const Button: React.FC<ButtonProps> = ({ children }) => (
+  <span data-testid={baseId}>{children}</span>
 );

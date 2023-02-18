@@ -1,5 +1,4 @@
 import type { ComponentMeta, Story } from '@storybook/react';
-import { propObj } from './Button.props';
 import { Button, ButtonProps } from './';
 
 export default {
@@ -10,6 +9,14 @@ export default {
 const Template: Story<ButtonProps> = (args) => <Button {...args} />;
 
 export const File = Template.bind({});
-File.args = propObj.file;
+File.args = {
+  children: <button className={`btn-file btn`}>画像ファイルを選択</button>,
+};
 export const Inquery = Template.bind({});
-Inquery.args = propObj.inquery;
+Inquery.args = {
+  children: (
+    <a href=''>
+      <button className={`btn-inquery btn`}>お問い合わせ</button>
+    </a>
+  ),
+};
