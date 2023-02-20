@@ -8,7 +8,7 @@ export interface PageMainLogicProps {
 const handleLoad = (): void => {
   console.log('hello dermatologist!');
 };
-const logicObj: PageMainLogicProps = {
+export const logicObj: PageMainLogicProps = {
   handleLoad: handleLoad,
 };
 
@@ -17,4 +17,4 @@ const PageMain: React.FC = () => {
   return <PageMainPresenter {...defaultProps} {...logicObj} />;
 };
 
-export { PageMain, logicObj };
+export { PageMain };
