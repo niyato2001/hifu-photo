@@ -1,5 +1,5 @@
 import type { ComponentMeta, Story } from '@storybook/react';
-import { PageMain, PageMainProps } from './PageMain';
+import { PageMain, PageMainPresenterProps } from './PageMain';
 import { propObj } from './PageMain.props';
 
 export default {
@@ -7,7 +7,7 @@ export default {
   component: PageMain,
 } as ComponentMeta<typeof PageMain>;
 
-const Template: Story<PageMainProps> = (args) => <PageMain {...args} />;
+const Template: Story<PageMainPresenterProps> = (args) => <PageMain {...args} />;
 
 export const Default = Template.bind({});
 Default.args = propObj.default;

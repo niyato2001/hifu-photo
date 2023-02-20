@@ -1,9 +1,20 @@
-import { PageMain as PageMainPresenter, PageMainProps } from './PageMain';
-import { propObj } from './PageMain.props';
+import { PageMain as PageMainPresenter } from './PageMain';
+import { propObj, PageMainDataProps } from './PageMain.props';
 
-const PageMain: React.FC = () => {
-  const defaultProps: PageMainProps = { ...propObj.default };
-  return <PageMainPresenter {...defaultProps} />;
+export interface PageMainLogicProps {
+  handleLoad: () => void;
+}
+
+const handleLoad = (): void => {
+  console.log('hello dermatologist!');
+};
+const logicObj: PageMainLogicProps = {
+  handleLoad: handleLoad,
 };
 
-export { PageMain };
+const PageMain: React.FC = () => {
+  const defaultProps: PageMainDataProps = { ...propObj.default };
+  return <PageMainPresenter {...defaultProps} {...logicObj} />;
+};
+
+export { PageMain, logicObj };
