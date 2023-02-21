@@ -10,7 +10,7 @@ export interface ImageFileProps extends ImageProps {
 }
 
 interface UseImageFilesReturnType {
-  imageFiles: ImageProps[];
+  imageFiles: ImageFileProps[];
   setImageFiles: Dispatch<SetStateAction<ImageFileProps[]>>;
 }
 
