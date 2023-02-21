@@ -1,19 +1,9 @@
 import { render } from '@testing-library/react';
-import { PageMain } from './PageMain';
-import { propObj as presenterObj, PageMainDataProps } from './PageMain.props';
-import { logicObj, PageMainLogicProps } from './';
 
-let presenterProps: PageMainDataProps;
-let logicProps: PageMainLogicProps;
+import { PageMain } from './';
 
-describe('default', () => {
-  beforeEach(() => {
-    presenterProps = presenterObj.default;
-    logicProps = logicObj;
-  });
-
+describe('default', () =>
   it('default のテストケースを書くこと', () => {
-    render(<PageMain {...presenterProps} {...logicProps} />);
+    render(<PageMain />);
     expect(true).toBe(true);
-  });
-});
+  }));
