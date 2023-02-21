@@ -2,7 +2,7 @@ import Image, { StaticImageData } from 'next/image';
 
 export interface PageMainPresenterProps {
   imageFiles: StaticImageData[];
-  handleLoad: () => void;
+  handleLoad: (event: React.ChangeEvent<HTMLInputElement>) => void;
   //fileButton: ButtonProps;
   // readButton: ButtonProps;
   // renameButton: ButtonProps;
@@ -30,11 +30,12 @@ export const PageMain: React.FC<PageMainPresenterProps> = ({
         画像ファイルを選択
       </button> */}
       {/* inputを包含したbuttonでファイルを選択できたらhandleLoadを作動 */}
-      <button className='btn-file btn relative inline-block max-w-fit'>
+      <button className='btn-file btn relative inline-block max-w-fit '>
         画像ファイルを選択
         <input
           type='file'
-          className='absolute left-0 top-0 h-full w-full opacity-0'
+          className='absolute left-0 top-0 h-full w-full cursor-pointer opacity-0'
+          multiple
           onChange={handleLoad}
         />
       </button>
