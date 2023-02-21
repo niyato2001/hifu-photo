@@ -1,8 +1,8 @@
 import Image, { StaticImageData } from 'next/image';
+import { PageMainLogicProps } from '.';
 
-export interface PageMainPresenterProps {
+export interface PageMainPresenterProps extends PageMainLogicProps {
   imageFiles: StaticImageData[];
-  handleLoad: (event: React.ChangeEvent<HTMLInputElement>) => void;
   //fileButton: ButtonProps;
   // readButton: ButtonProps;
   // renameButton: ButtonProps;
@@ -13,6 +13,7 @@ export const baseId = 'common-template-page-main';
 export const PageMain: React.FC<PageMainPresenterProps> = ({
   imageFiles,
   handleLoad,
+  loadImages,
   //  fileButton,
   // readButton,
   // renameButton,
@@ -47,5 +48,13 @@ export const PageMain: React.FC<PageMainPresenterProps> = ({
         <Image alt='' src={image} width={100} height={100} />
       </div>
     ))}
+    <div className='flex'>
+      {loadImages.map((image, i) => (
+        <div key={i} className='flex-row items-center justify-center'>
+          <Image alt='' src={image.url} width={200} height={200} />
+          <p>{image.image.name}</p>
+        </div>
+      ))}
+    </div>
   </>
 );
