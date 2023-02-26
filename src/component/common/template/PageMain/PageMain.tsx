@@ -14,6 +14,8 @@ export const PageMain: React.FC<PageMainPresenterProps> = ({
   imageFiles,
   handleLoad,
   loadImages,
+  readImages,
+  readCode,
   //  fileButton,
   // readButton,
   // renameButton,
@@ -45,17 +47,37 @@ export const PageMain: React.FC<PageMainPresenterProps> = ({
     </div>
     {imageFiles.map((image, i) => (
       <div key={i}>
-        <Image alt='' src={image} width={100} height={100} />
+        <Image alt='' src={image} width={100} height={35} />
       </div>
     ))}
     <div className='flex'>
-      {loadImages.map((image, i) => (
-        <div key={i} className='flex-row items-center justify-center'>
-          <Image alt='' src={image.url} width={200} height={200} />
-          <p>{image.image.name}</p>
-          <p>{new Date(image.image.lastModified).toDateString()}</p>
-        </div>
-      ))}
+      {loadImages
+        ? loadImages.map((image, i) => (
+            <div key={i} className='flex-row items-center justify-center'>
+              <Image alt='' src={image.url} width={200} height={200} />
+              <p>{image.image.name}</p>
+              <p>{new Date(image.image.lastModified).toDateString()}</p>
+            </div>
+          ))
+        : null}
+      {readImages
+        ? readImages.map((image, i) => (
+            <div key={i} className='flex-row items-center justify-center'>
+              <Image alt='' src={image.url} width={200} height={200} />
+              <p>{image.image.name}</p>
+              <p>{new Date(image.image.lastModified).toDateString()}</p>
+              <span>
+                結果
+                <p>{image.decode}</p>
+              </span>
+            </div>
+          ))
+        : null}
+    </div>
+    <div className='my-10 mx-auto flex w-80 flex-col gap-10'>
+      <button className='btn-file btn  mx-auto' onClick={readCode}>
+        バーコードを読み取る
+      </button>
     </div>
   </>
 );
