@@ -61,28 +61,50 @@ const PageMain: React.FC = () => {
       //loadImagesはすぐにはかわらない
     } else return;
   };
-  const readCode = (): void => {
+  // await ではなく then を使うとこんな書き方。 readCode を async にしなくてもよくなる。
+  // const readCode = (): void => {
+  //   if (!createObjectURL) {
+  //     return;
+  //   } else {
+  //     console.log('ここでは追加されている', createObjectURL);
+  //     const list = [...images];
+  //     scanCode(createObjectURL).then((val) => {
+  //       console.log('val', val);
+  //       const newDecode = val;
+  //       console.log('これはだめなのか', images);
+  //       const newReadImages: ReadImageProps[] = list.map((file, i) => ({
+  //         image: list[i],
+  //         url: createObjectURL[i],
+  //         decode: newDecode[i],
+  //       }));
+  //       console.log('これはだめなのか２', newDecode);
+  //       console.log('decodeできてる？', newReadImages);
+  //       setReadImages(newReadImages);
+  //     });
+  //   }
+  // };
+
+  const readCode = async (): Promise<void> => {
     if (!createObjectURL) {
       return;
     } else {
-      console.log('ここでは追加されている', createObjectURL);
+      console.log(
+        'バーコード読み取り時点ではすでに blob は追加されていることを確認',
+        createObjectURL,
+      );
+      //imagesを展開してあたらしい画像ファイルの配列を作成
       const list = [...images];
-      scanCode(createObjectURL).then((val) => {
-        console.log('val', val);
-        const newDecode = val;
-        console.log('これはだめなのか', images);
-        const newReadImages: ReadImageProps[] = list.map((file, i) => ({
-          image: list[i],
-          url: createObjectURL[i],
-          decode: '',
-        }));
-        console.log('これはだめなのか２', newDecode);
-        newReadImages.forEach((image, i) => {
-          image['decode'] = newDecode[i];
-        });
-        console.log('decodeできてる？', newReadImages);
-        setReadImages(newReadImages);
-      });
+      //await を使って scanCode の処理で 読み込んだバーコードの配列を val に取得
+      const val = await scanCode(createObjectURL);
+      console.log('読み込んだバーコードの配列', val);
+      const newDecode = val;
+      const newReadImages: ReadImageProps[] = list.map((file, i) => ({
+        image: list[i],
+        url: createObjectURL[i],
+        decode: newDecode[i],
+      }));
+      console.log('File, blob, 読み込んだコードの Obj の配列', newReadImages);
+      setReadImages(newReadImages);
     }
   };
   const logicObj: PageMainLogicProps = {
