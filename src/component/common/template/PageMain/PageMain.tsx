@@ -16,6 +16,7 @@ export const PageMain: React.FC<PageMainPresenterProps> = ({
   loadImages,
   readImages,
   readCode,
+  renameImage,
   //  fileButton,
   // readButton,
   // renameButton,
@@ -60,6 +61,13 @@ export const PageMain: React.FC<PageMainPresenterProps> = ({
             </div>
           ))
         : null}
+    </div>
+    <div className='my-10 mx-auto flex w-80 flex-col gap-10'>
+      <button className='btn-file btn  mx-auto' onClick={readCode}>
+        バーコードを読み取る
+      </button>
+    </div>
+    <div className='flex'>
       {readImages
         ? readImages.map((image, i) => (
             <div key={i} className='flex-row items-center justify-center'>
@@ -75,9 +83,10 @@ export const PageMain: React.FC<PageMainPresenterProps> = ({
         : null}
     </div>
     <div className='my-10 mx-auto flex w-80 flex-col gap-10'>
-      <button className='btn-file btn  mx-auto' onClick={readCode}>
-        バーコードを読み取る
+      <button className='btn-file btn  mx-auto' onClick={renameImage}>
+        リネームする
       </button>
     </div>
+    <div className='flex'></div>
   </>
 );

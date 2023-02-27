@@ -1,13 +1,15 @@
 import { useState } from 'react';
 import { PageMain as PageMainPresenter } from './PageMain';
 import { propObj, PageMainDataProps } from './PageMain.props';
+import { downloadImages } from '@/lib/downloadImages';
 import { scanCode } from '@/lib/scan';
 
 export interface PageMainLogicProps {
   handleLoad: (event: React.ChangeEvent<HTMLInputElement>) => void;
   loadImages: LoadFileProps[];
   readImages: ReadImageProps[];
-  readCode: () => void;
+  readCode: () => Promise<void>;
+  renameImage: () => Promise<void>;
 }
 
 interface LoadFileProps {
@@ -107,11 +109,20 @@ const PageMain: React.FC = () => {
       setReadImages(newReadImages);
     }
   };
+  const renameImage = async (): Promise<void> => {
+    const newDownloadImages = readImages.map((image, i) => ({
+      url: readImages[i].url,
+      filename: readImages[i].decode,
+    }));
+    await downloadImages(newDownloadImages);
+  };
+
   const logicObj: PageMainLogicProps = {
     handleLoad: handleLoad,
     loadImages: loadImages,
     readImages: readImages,
     readCode: readCode,
+    renameImage: renameImage,
   };
   const defaultProps: PageMainDataProps = { ...propObj.default };
   return <PageMainPresenter {...defaultProps} {...logicObj} />;
