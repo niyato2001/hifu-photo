@@ -3,6 +3,7 @@ import Quagga from '@ericblade/quagga2';
 export const scanCode = async (src: string[]): Promise<string[]> => {
   const initialDecode: string[] = [];
   const scan = async (src: string) => {
+    //decodeをする（時間がかかる処理なので待つ）
     await Quagga.decodeSingle(
       {
         decoder: {
@@ -26,18 +27,25 @@ export const scanCode = async (src: string[]): Promise<string[]> => {
         }
       },
     );
-    return initialDecode;
+    //decodeが終わったら、initialDecode を return する（不要）
+    // return initialDecode;
   };
-  //ただのmapではだめでPromise.allを使えばできるけど、順番は適当になりそう。。
+  //ただのmapではだめでPromise.allを使えばできるけど、順番は適当になりそう。。（たぶん適当にはならない。）
   await Promise.all(
-    src.map((src) =>
-      scan(src).then((val) => {
-        console.log(val);
-        // const newDecode = val;
-        // return newDecode;
-      }),
+    src.map(
+      //scan();自体がPromiseなのでOK。ここでinitialDecodeに追加変更していく。
+      (src) => scan(src),
+      // .then((val) => {
+      //   console.log(val);
+      //   // const newDecode = val;
+      //   // return newDecode;
+      // }),
     ),
   );
-  console.log('ここでだめならだめ', initialDecode);
+  console.log(
+    'await Promise.all (Promise)しているのでこの処理が終わってからinitialDecode を出力',
+    initialDecode,
+  );
+  //この return は必要！
   return initialDecode;
 };
