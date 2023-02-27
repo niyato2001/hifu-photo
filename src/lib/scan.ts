@@ -16,7 +16,7 @@ export const scanCode = async (src: string[]): Promise<string[]> => {
         // or 'data:image/jpg;base64,' + data
       },
       function (result) {
-        if (result.codeResult) {
+        if (result?.codeResult) {
           console.log('result', result.codeResult.code);
           const newCode = String(result.codeResult.code);
           initialDecode.push(newCode);
