@@ -24,12 +24,12 @@ interface ReadImageProps {
 }
 
 const PageMain: React.FC = () => {
-  const [images, setImage] = useState<File[]>([]);
-  const [createObjectURL, setCreateObjectURL] = useState<string[]>([]);
+  const [images, setImages] = useState<File[]>([]);
+  const [imageUrls, setImageUrls] = useState<string[]>([]);
   const [loadImages, setLoadImages] = useState<LoadFileProps[]>([]);
   const [readImages, setReadImages] = useState<ReadImageProps[]>([]);
   console.log('全体がレンダリングされています');
-
+  console.log(images, imageUrls, loadImages, readImages);
   const handleLoad = (event: React.ChangeEvent<HTMLInputElement>): void => {
     console.log('hello dermatologist!');
     if (event.target.files) {
@@ -42,41 +42,41 @@ const PageMain: React.FC = () => {
       list.push(...files);
       //画像ファイルの配列をimagesに追加し状態変更。状態変更はレンダリング時に非同期におこなわれる。
       console.log('画像ファイルが追加されたlist', list);
-      setImage(list);
+      setImages(list);
       //imagesはすぐに変わらない
       console.log('更新されていないのimages', images);
-      //createObjectURLを展開してあたらしいＵＲＬの配列を作成
-      const urlList = [...createObjectURL];
+      //imageUrlsを展開してあたらしいＵＲＬの配列を作成
+      const urlList = [...imageUrls];
       list.map((file) => urlList.push(URL.createObjectURL(file)));
-      //URLの配列をcreateObjURLに追加し状態変更。状態変更はレンダリング時に非同期におこなわれる。
-      console.log('URLが追加されたurlList', urlList);
-      setCreateObjectURL(urlList);
-      //createObjectURLはすぐには変わらない
-      console.log('更新されていないcreateObjectURL', createObjectURL);
+      //Urlsの配列をimageUrlsに追加し状態変更。状態変更はレンダリング時に非同期におこなわれる。
+      console.log('Urlsが追加されたurlList', urlList);
+      setImageUrls(urlList);
+      //imageUrlsはすぐには変わらない
+      console.log('更新されていないimageUrls', imageUrls);
       //listとurlListを合わせたオブジェクト配列を作成しloadImagesの状態変更
       const loadList: LoadFileProps[] = list.map((file, i) => ({
         image: list[i],
         url: urlList[i],
       }));
-      console.log('ファイルとURLが合わさった配列', loadList);
+      console.log('ファイルとUrlsが合わさった配列', loadList);
       setLoadImages(loadList);
       //loadImagesはすぐにはかわらない
     } else return;
   };
   // await ではなく then を使うとこんな書き方。 readCode を async にしなくてもよくなる。
   // const readCode = (): void => {
-  //   if (!createObjectURL) {
+  //   if (!imageUrls) {
   //     return;
   //   } else {
-  //     console.log('ここでは追加されている', createObjectURL);
+  //     console.log('ここでは追加されている', imageUrls);
   //     const list = [...images];
-  //     scanCode(createObjectURL).then((val) => {
+  //     scanCode(imageUrls).then((val) => {
   //       console.log('val', val);
   //       const newDecode = val;
   //       console.log('これはだめなのか', images);
   //       const newReadImages: ReadImageProps[] = list.map((file, i) => ({
   //         image: list[i],
-  //         url: createObjectURL[i],
+  //         url: imageUrls[i],
   //         decode: newDecode[i],
   //       }));
   //       console.log('これはだめなのか２', newDecode);
@@ -87,22 +87,19 @@ const PageMain: React.FC = () => {
   // };
 
   const readCode = async (): Promise<void> => {
-    if (!createObjectURL) {
+    if (!imageUrls) {
       return;
     } else {
-      console.log(
-        'バーコード読み取り時点ではすでに blob は追加されていることを確認',
-        createObjectURL,
-      );
+      console.log('バーコード読み取り時点ではすでに blob は追加されていることを確認', imageUrls);
       //imagesを展開してあたらしい画像ファイルの配列を作成
       const list = [...images];
       //await を使って scanCode の処理で 読み込んだバーコードの配列を val に取得
-      const val = await scanCode(createObjectURL);
+      const val = await scanCode(imageUrls);
       console.log('読み込んだバーコードの配列', val);
       const newDecode = val;
       const newReadImages: ReadImageProps[] = list.map((file, i) => ({
         image: list[i],
-        url: createObjectURL[i],
+        url: imageUrls[i],
         decode: newDecode[i],
       }));
       console.log('File, blob, 読み込んだコードの Obj の配列', newReadImages);
@@ -110,11 +107,21 @@ const PageMain: React.FC = () => {
     }
   };
   const renameImage = async (): Promise<void> => {
-    const newDownloadImages = readImages.map((image, i) => ({
-      url: readImages[i].url,
-      filename: readImages[i].decode,
-    }));
-    await downloadImages(newDownloadImages);
+    if (!readImages) {
+      return;
+    } else {
+      const newDownloadImages = readImages.map((image, i) => ({
+        url: readImages[i].url,
+        filename: readImages[i].decode,
+      }));
+      //ここでdecodeごとで区切った配列{decode:string,groupImages:{url,filename}[]}[]
+      await downloadImages(newDownloadImages);
+      setImages([]);
+      setImageUrls([]);
+      setLoadImages([]);
+      setReadImages([]);
+      console.log('レンダリング前なので、まだ情報あり', images, imageUrls, loadImages, readImages);
+    }
   };
 
   const logicObj: PageMainLogicProps = {
