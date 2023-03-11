@@ -22,7 +22,7 @@
         }
       }
     ],
-    "no-console": ["error", { "allow": ["warn", "info", "error"] }],
+    // "no-console": ["error", { "allow": ["warn", "info", "error"] }],
     "func-style": ["error", "expression"],
     "arrow-body-style": ["error", "as-needed"],
     "import/no-default-export": "error",
