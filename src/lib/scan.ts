@@ -30,22 +30,30 @@ export const scanCode = async (src: string[]): Promise<string[]> => {
     //decodeが終わったら、initialDecode を return する（不要）
     // return initialDecode;
   };
-  //ただのmapではだめでPromise.allを使えばできるけど、順番は適当になりそう。。（たぶん適当にはならない。）
-  await Promise.all(
-    src.map(
-      //scan();自体がPromiseなのでOK。ここでinitialDecodeに追加変更していく。
-      (src) => scan(src),
-      // .then((val) => {
-      //   console.log(val);
-      //   // const newDecode = val;
-      //   // return newDecode;
-      // }),
-    ),
-  );
-  console.log(
-    'await Promise.all (Promise)しているのでこの処理が終わってからinitialDecode を出力',
-    initialDecode,
-  );
+
+  await src.reduce(
+    //scan();自体がPromiseなのでOK。ここでinitialDecodeに追加変更していく。
+    (promise, src) =>
+      promise.then(async () => {
+        await scan(src);
+      }),
+    Promise.resolve(),
+
+    // await Promise.all(
+    //ただのmapではだめでPromise.allを使えばできるけど、順番は適当になる（並列処理だとだめ。reduceを使って直列処理にする必要がある。）
+    //   src.map(
+    //scan();自体がPromiseなのでOK。ここでinitialDecodeに追加変更していく。
+    // (src) => scan(src),
+    // .then((val) => {
+    //   console.log(val);
+    //   // const newDecode = val;
+    //   // return newDecode;
+    // }),
+  ),
+    console.log(
+      'await Promise.all (Promise)しているのでこの処理が終わってからinitialDecode を出力',
+      initialDecode,
+    );
   //この return は必要！
   return initialDecode;
 };
