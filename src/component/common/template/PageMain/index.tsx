@@ -23,6 +23,16 @@ interface ReadImageProps {
   decode: string;
 }
 
+interface GroupImageProps {
+  url: string;
+  filename: string;
+}
+
+export interface IdImageProps {
+  id: string;
+  groupImages: GroupImageProps[];
+}
+
 const PageMain: React.FC = () => {
   const [images, setImages] = useState<File[]>([]);
   const [imageUrls, setImageUrls] = useState<string[]>([]);
@@ -110,12 +120,44 @@ const PageMain: React.FC = () => {
     if (!readImages) {
       return;
     } else {
-      const newDownloadImages = readImages.map((image, i) => ({
+      const newDownloadImages: GroupImageProps[] = readImages.map((image, i) => ({
         url: readImages[i].url,
         filename: readImages[i].decode,
       }));
-      //ここでdecodeごとで区切った配列{decode:string,groupImages:{url,filename}[]}[]
-      await downloadImages(newDownloadImages);
+      //ここでdecodeごとで区切った配列{id:string,groupImages:{url,filename}[]}[]
+      const initialIdImages: IdImageProps[] = [];
+      const decodeIndex: number[] = [];
+      //newDownloadImagesでfilenameがidであるもののindexを取得
+      newDownloadImages.forEach((image, i) => {
+        if (image.filename !== 'not detected') {
+          decodeIndex.push(i);
+        } else {
+          return;
+        }
+      });
+      //idごとに区切ったobjを作成{id:string,groupImages:{url,filename}[]}
+      decodeIndex.forEach((index, i) => {
+        // if (i !== decodeIndex.length - 1) {
+        //decodeIndexで最後以外の場合
+        initialIdImages.push({
+          id: newDownloadImages[index].filename,
+          //newDownloadImagesからindex番目から次のindexの一つ手前までの要素を取り出す
+          //最後はslice(last,last+1)となるが、slice(last)と同義なのでOK?
+          groupImages: newDownloadImages.slice(index, decodeIndex[i + 1]),
+        });
+        // } else {
+        //   //decodeIndexで最後の場合、decodeIndex[i+1]がundefinedとなる可能性がある。上記でもいけるかもしれないので後で試す（上記のみでいける。）
+        //   initialIdImages.push({
+        //     id: newDownloadImages[index].filename,
+        //     //newDownloadImagesからindex番目から次のindexの一つ手前までの要素を取り出す
+        //     //最後はslice(last,last+1)となるが、slice(last)と同義なのでOK?
+        //     groupImages: newDownloadImages.slice(index),
+        //   });
+        // }
+      });
+      //この時点でinitialIdImagesはdecodeしたIDごとで区切った配列になっているはず
+      //initialIdImagesはstateの方がよい説あり。
+      await downloadImages(initialIdImages);
       setImages([]);
       setImageUrls([]);
       setLoadImages([]);
