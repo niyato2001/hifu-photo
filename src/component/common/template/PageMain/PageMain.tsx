@@ -22,7 +22,14 @@ export const PageMain: React.FC<PageMainPresenterProps> = ({
   // renameButton,
 }) => (
   <>
-    <h1 className='text-center text-2xl font-bold text-black'>皮膚科専攻医の写真整理を DX する</h1>
+    <h1 className='flex items-center justify-center gap-10 text-center text-2xl font-bold text-black'>
+      {imageFiles.map((image, i) => (
+        <span key={i}>
+          <Image alt='logo' src={image} width={200} height={84} />
+        </span>
+      ))}
+      皮膚科専攻医の写真整理を DX する
+    </h1>
     <div className='my-10 mx-auto flex w-80 flex-col gap-10'>
       {/* <button
         onClick={
@@ -46,11 +53,7 @@ export const PageMain: React.FC<PageMainPresenterProps> = ({
       {/* <Button {...readButton} />
       <Button {...renameButton} /> */}
     </div>
-    {imageFiles.map((image, i) => (
-      <div key={i}>
-        <Image alt='' src={image} width={100} height={35} />
-      </div>
-    ))}
+
     <div className='flex'>
       {loadImages
         ? loadImages.map((image, i) => (
