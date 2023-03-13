@@ -14,6 +14,14 @@ export const scanCode = async (src: string[]): Promise<string[]> => {
         // try to locate the barcode in the image
         src: src,
         // or 'data:image/jpg;base64,' + data
+        locator: {
+          patchSize: 'medium',
+          halfSample: false,
+        },
+        inputStream: {
+          size: 1000,
+          // singleChannel: false,
+        },
       },
       function (result) {
         if (result?.codeResult) {

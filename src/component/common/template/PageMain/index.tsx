@@ -102,14 +102,13 @@ const PageMain: React.FC = () => {
     } else {
       console.log('バーコード読み取り時点ではすでに blob は追加されていることを確認', imageUrls);
       //imagesを展開してあたらしい画像ファイルの配列を作成
-      const list = [...images];
+      const list = [...loadImages];
       //await を使って scanCode の処理で 読み込んだバーコードの配列を val に取得
-      const val = await scanCode(imageUrls);
+      const val = await scanCode(list.map((obj) => obj.url));
       console.log('読み込んだバーコードの配列', val);
       const newDecode = val;
       const newReadImages: ReadImageProps[] = list.map((file, i) => ({
-        image: list[i],
-        url: imageUrls[i],
+        ...list[i],
         decode: newDecode[i],
       }));
       console.log('File, blob, 読み込んだコードの Obj の配列', newReadImages);
