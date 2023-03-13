@@ -1,5 +1,5 @@
 import { StaticImageData } from 'next/image';
-import SampleImage from '~/img/fwywd.png';
+import SampleImage from '~/img/hifunavi.png';
 // import { propObj as buttonProps } from '@/component/common/part/Button/Button.props';
 
 export interface PageMainDataProps {
